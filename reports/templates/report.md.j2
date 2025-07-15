@@ -1,0 +1,27 @@
+# SmartRecon Pro Report for {{ domain }}
+
+Generated: {{ timestamp }}
+
+## Critical Findings
+{% for vuln in critical_findings %}
+- **{{ vuln.cve_id }}** (Score: {{ vuln.risk_score }})
+  - Asset: {{ vuln.asset }}
+  - PoC: `curl {{ vuln.asset }}`
+{% endfor %}
+
+## Subdomains
+{% for subdomain in subdomains %}
+- {{ subdomain }}
+{% endfor %}
+
+## Assets
+{% for asset in assets %}
+- IP: {{ asset.ip }} (Ports: {{ asset.ports }})
+{% endfor %}
+
+## Leaks
+{% for leak in leaks %}
+- Source: {{ leak.source }}
+  - Date: {{ leak.date }}
+  - Content: {{ leak.content | truncate(100) }}
+{% endfor %}

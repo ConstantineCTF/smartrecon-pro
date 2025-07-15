@@ -1,0 +1,8 @@
+api_keys:
+  shodan: ""
+  censys_id: ""
+  censys_secret: ""
+proxies: []
+stealth:
+  min_delay: 0.5
+  max_delay: 5.0

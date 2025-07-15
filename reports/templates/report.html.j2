@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartRecon Pro Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        h1 { color: #2c3e50; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>SmartRecon Pro Report for {{ domain }}</h1>
+    <p>Generated: {{ timestamp }}</p>
+
+    <h2>Critical Findings</h2>
+    <table>
+        <tr><th>CVE</th><th>Score</th><th>Asset</th><th>PoC</th></tr>
+        {% for vuln in critical_findings %}
+        <tr>
+            <td>{{ vuln.cve_id }}</td>
+            <td>{{ vuln.risk_score }}</td>
+            <td>{{ vuln.asset }}</td>
+            <td><code>curl {{ vuln.asset }}</code></td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Subdomains</h2>
+    <ul>
+        {% for subdomain in subdomains %}
+        <li>{{ subdomain }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Assets</h2>
+    <table>
+        <tr><th>IP</th><th>Ports</th><th>Type</th></tr>
+        {% for asset in assets %}
+        <tr>
+            <td>{{ asset.ip }}</td>
+            <td>{{ asset.ports }}</td>
+            <td>{{ asset.type }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Leaks</h2>
+    <ul>
+        {% for leak in leaks %}
+        <li>{{ leak.source }} ({{ leak.date }}): {{ leak.content | truncate(100) }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
