@@ -16,4 +16,4 @@ data/model.pkl
 
 # Misc
 *.log
-.DS_Store
+.DS_Store.vscode/
