@@ -13,8 +13,9 @@ async def main():
     args = parser.parse_args()
 
     try:
+        domain = await validate_domain(args.domain)  # Fixed: Added await here
         recon = SmartRecon(
-            domain=validate_domain(args.domain),
+            domain=domain,
             stealth=args.stealth,
             output_dir=args.output_dir,
             plugins=args.plugins.split(",") if args.plugins != "all" else ["all"],
