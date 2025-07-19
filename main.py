@@ -1,30 +1,19 @@
-import asyncio
 import argparse
-from core.scanner import SmartRecon
-from core.utils import validate_domain
+import asyncio
+from core.scanner import Scanner
+from core.utils import setup_logging
 
 async def main():
-    parser = argparse.ArgumentParser(description="SmartRecon Pro: Enterprise-grade reconnaissance tool")
-    parser.add_argument("domain", help="Target domain (e.g., target.com)")
+    parser = argparse.ArgumentParser(description="SmartRecon Pro - Advanced Recon Tool")
+    parser.add_argument("target", help="Target URL, IP, or domain (e.g., http://127.0.0.1/dvwa)")
+    parser.add_argument("--plugins", default="all", help="Plugins to run (e.g., subdomain,vuln,cloud,leak or all)")
     parser.add_argument("--stealth", action="store_true", help="Enable stealth mode")
-    parser.add_argument("--output-dir", default="./reports/output", help="Output directory for reports")
-    parser.add_argument("--plugins", default="all", help="Comma-separated plugins (e.g., subdomain,vuln)")
-    parser.add_argument("--offline", action="store_true", help="Run in offline mode")
+    parser.add_argument("--output", default="reports/output", help="Output directory")
     args = parser.parse_args()
 
-    try:
-        domain = await validate_domain(args.domain)  # Fixed: Added await here
-        recon = SmartRecon(
-            domain=domain,
-            stealth=args.stealth,
-            output_dir=args.output_dir,
-            plugins=args.plugins.split(",") if args.plugins != "all" else ["all"],
-            offline=args.offline
-        )
-        await recon.scan()
-        recon.generate_report()
-    except Exception as e:
-        print(f"Error: {str(e)}")
+    logger = setup_logging()
+    scanner = Scanner(args.target, args.plugins, args.stealth, args.output)
+    await scanner.run()
 
 if __name__ == "__main__":
     asyncio.run(main())
